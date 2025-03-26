@@ -120,10 +120,10 @@ class Model6(BaseModel):
         )
 
     def calculate_wait_log_likelihood(
-        self, lamdba_k_of_t, mu_k_of_t, start_minute: float, end_minute: float
+        self, lamdba_k_of_t, mu_k_of_t, t_start_minute: float, t_end_minute: float
     ) -> float:
-        return -_integrate(lamdba_k_of_t, start_minute, end_minute) - _integrate(
-            mu_k_of_t, start_minute, end_minute
+        return -_integrate(lamdba_k_of_t, t_start_minute, t_end_minute) - _integrate(
+            mu_k_of_t, t_start_minute, t_end_minute
         )
 
     def calculate_goal_log_likelihood(
@@ -241,7 +241,7 @@ class Model6(BaseModel):
         home: int,
     ):
         if goal:
-            t = start_minute
+            t = start_minute / 90.0
             J_k_l = home
             return self.calculate_goal_log_likelihood(
                 # params
@@ -473,8 +473,8 @@ class Model6(BaseModel):
         bounds = [(-2, 2)] * (2 * self.n_teams) + [
             (-2, 1),  # constant
             (-0.5, 1.0),  # home advantage
-            (-0.5, 0.5),  # injury_time_1
-            (-0.5, 0.5),  # injury_time_1
+            (-0.5, 2.0),  # injury_time_1
+            (-0.5, 2.0),  # injury_time_1
             (-0.5, 0.5),  # lambda_10
             (-0.5, 0.5),  # lambda_01
             (-0.5, 0.5),  # lambda_11

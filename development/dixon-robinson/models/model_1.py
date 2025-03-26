@@ -172,7 +172,7 @@ class Model1(BaseModel):
         home: int,
     ):
         if goal:
-            t = start_minute
+            t = start_minute / 90.0
             J_k_l = home
             return self.calculate_goal_log_likelihood(  # params
                 alpha_i,
